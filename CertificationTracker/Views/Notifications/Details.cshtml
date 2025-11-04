@@ -1,0 +1,52 @@
+﻿@model CertificationTracker.Models.CertificationNotificationViewModel
+
+@{
+    ViewData["Title"] = "Notification Details";
+}
+
+<div class="d-flex align-items-center mb-3">
+    <h2 class="mb-0">@Model.CertificationName</h2>
+    <div class="ms-auto small text-muted">@Model.AffectedCount assignment(s) affected</div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Affected assignments</h5>
+        @if (!Model.Assignments.Any())
+        {
+            <p class="text-muted mb-0">No assignments found.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Expiry</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model.Assignments)
+                        {
+                            <tr>
+                                <td>@a.EmployeeName</td>
+                                <td>@(a.DateExpiry.HasValue? a.DateExpiry.Value.ToLocalTime().ToString("yyyy-MM-dd") : "-")</td>
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-outline-secondary" asp-controller="Employees" asp-action="Details" asp-route-id="@a.EmployeeId">Profile</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <a class="btn btn-secondary" asp-action="Index">Back</a>
+    <a class="btn btn-info" asp-action="AffectedAssignments" asp-route-certificationId="@Model.CertificationId">View Assignments</a>
+    <a class="btn btn-primary" asp-controller="Certifications" asp-action="Details" asp-route-id="@Model.CertificationId">Open Certification</a>
+</div>

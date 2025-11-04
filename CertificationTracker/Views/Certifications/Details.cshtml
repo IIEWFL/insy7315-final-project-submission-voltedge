@@ -1,0 +1,37 @@
+﻿@model CertificationTracker.Models.Certification
+@{
+    ViewData["Title"] = "Certification Details";
+}
+<h2>Certification Details</h2>
+<div class="row">
+    <div class="col-md-4">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" class="img-fluid" alt="Certification Image" />
+        }
+        else
+        {
+            <div class="border p-3 text-center">No image</div>
+        }
+    </div>
+    <div class="col-md-8">
+        <h3>@Model.CertificationName</h3>
+        <p>@Model.Description</p>
+        <p><strong>Validity:</strong> @(Model.ValidityMonths?.ToString() ?? "-") months</p>
+
+        <h5>Assigned Employees</h5>
+        @if (Model.EmployeeCertifications?.Any() ?? false)
+        {
+            <ul>
+                @foreach (var ec in Model.EmployeeCertifications)
+                {
+                    <li>@ec.Employee?.FullName (@ec.DateIssued.ToShortDateString())</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No employees assigned.</p>
+        }
+    </div>
+</div>

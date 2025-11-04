@@ -1,0 +1,24 @@
+﻿@model IEnumerable<CertificationTracker.Models.Employee>
+@{
+    ViewData["Title"] = "Employees";
+}
+<h2>Employees</h2>
+<p><a class="btn btn-primary" asp-action="Create">Create New</a></p>
+<table class="table">
+    <thead><tr><th>Name</th><th>Position</th><th>Department</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.FullName</td>
+                <td>@e.Position</td>
+                <td>@e.Department</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@e.EmployeeId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@e.EmployeeId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@e.EmployeeId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

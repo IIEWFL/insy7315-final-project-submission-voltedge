@@ -1,0 +1,11 @@
+﻿@model CertificationTracker.Models.EmployeeCertification
+<h2>Assignment Details</h2>
+<p><strong>Employee:</strong> @Model.Employee?.FullName</p>
+<p><strong>Certification:</strong> @Model.Certification?.CertificationName</p>
+<p><strong>Date Issued:</strong> @Model.DateIssued.ToShortDateString()</p>
+<p><strong>Expiry:</strong> @(Model.DateExpiry?.ToShortDateString() ?? "-")</p>
+<p><strong>Issued By:</strong> @Model.IssuedBy</p>
+@if (!string.IsNullOrEmpty(Model.DocumentUrl))
+{
+    <p><strong>Document:</strong> <a href="@Model.DocumentUrl" target="_blank">Download</a></p>
+}

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<CertificationTracker.Models.CertificationNotificationViewModel>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="d-flex align-items-center mb-3">
+    <h2 class="mb-0">Notifications</h2>
+    <div class="ms-auto text-muted">Showing certifications with expiring assignments</div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card">
+        <div class="card-body">
+            <p class="mb-0">No certifications have expiring assignments within the configured window.</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-white">
+                <tr>
+                    <th>Certification</th>
+                    <th class="text-center">Affected</th>
+                    <th>Next expiry</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vm in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="fw-semibold">@vm.CertificationName</div>
+                            <div class="text-muted small">@vm.Assignments.Count() assignment(s)</div>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-warning text-dark">@vm.AffectedCount</span>
+                        </td>
+                        <td>
+                            @{
+                                var next = vm.Assignments.Any() ? vm.Assignments.Min(a => a.DateExpiry) : null;
+                                <text>@(next != null ? next.Value.ToLocalTime().ToString("yyyy-MM-dd") : "-")</text>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@vm.CertificationId">Details</a>
+                            <a class="btn btn-sm btn-info ms-1" asp-action="AffectedAssignments" asp-route-certificationId="@vm.CertificationId">View Assignments</a>
+                            <a class="btn btn-sm btn-secondary ms-1" asp-controller="Certifications" asp-action="Details" asp-route-id="@vm.CertificationId">Open</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

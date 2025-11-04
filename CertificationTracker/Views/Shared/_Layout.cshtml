@@ -1,0 +1,85 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - CertificationTracker</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                    <img src="https://tse3.mm.bing.net/th/id/OIP.GIaFLsMN-zgs9pKa5SJ2dQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="logo" class="me-2" style="height:32px; width:auto;" />
+                    <strong>CertificationTracker</strong>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Employees" asp-action="Index">Employees</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Certifications" asp-action="Index">Certifications</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="EmployeeCertifications" asp-action="Index">Assignments</a></li>
+                        <li class="nav-item">@await Component.InvokeAsync("NotificationsBadge")</li>
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto">
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-4">
+        <div class="container">
+            @{
+                string errorMessage = null;
+                try
+                {
+                    if (TempData.ContainsKey("ErrorMessage"))
+                    {
+                        var raw = TempData["ErrorMessage"];
+                        errorMessage = raw != null ? raw.ToString() : null;
+                    }
+                }
+                catch
+                {
+                    errorMessage = "There was an error loading the page. Please try again later.";
+                }
+            }
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger shadow-sm">
+                    @errorMessage
+                </div>
+            }
+
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container d-flex justify-content-between small text-muted">
+            <div>© @DateTime.UtcNow.Year CertificationTracker</div>
+            <div>Built for HR & Management</div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmAction(message, form) {
+            if (confirm(message)) form.submit();
+        }
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

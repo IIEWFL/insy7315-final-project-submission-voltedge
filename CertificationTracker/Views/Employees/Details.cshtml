@@ -1,0 +1,38 @@
+﻿@model CertificationTracker.Models.Employee
+<h2>Employee Details</h2>
+<p><strong>@Model.FullName</strong></p>
+<p>Position: @Model.Position</p>
+<p>Department: @Model.Department</p>
+<h4>Certifications</h4>
+@if (Model.EmployeeCertifications?.Any() ?? false)
+{
+    <table class="table">
+        <thead><tr><th>Certification</th><th>Date Issued</th><th>Expiry</th><th>Document</th></tr></thead>
+        <tbody>
+            @foreach (var ec in Model.EmployeeCertifications)
+            {
+                <tr>
+                    <td>@ec.Certification?.CertificationName</td>
+                    <td>@ec.DateIssued.ToShortDateString()</td>
+                    <td>@(ec.DateExpiry?.ToShortDateString() ?? "-")</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(ec.DocumentUrl))
+                        {
+                            <a href="@ec.DocumentUrl" target="_blank">Download</a>
+                        }
+                        else
+                        {
+
+                            @("-")
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No certifications assigned.</p>
+}
+<p><a asp-controller="EmployeeCertifications" asp-action="Create" asp-route-employeeId="@Model.EmployeeId" class="btn btn-sm btn-primary">Assign Certification</a></p>

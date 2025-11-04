@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CertificationTracker.Models.EmployeeCertification>
+<h2>Employee Certifications</h2>
+<p><a class="btn btn-primary" asp-action="Create">Assign Certification</a></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Certification</th>
+            <th>Date Issued</th>
+            <th>Expiry</th>
+            <th>Document</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ec in Model)
+        {
+            <tr>
+                <td>@ec.Employee?.FullName</td>
+                <td>@ec.Certification?.CertificationName</td>
+                <td>@ec.DateIssued.ToShortDateString()</td>
+                <td>@(ec.DateExpiry?.ToShortDateString() ?? "-")</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(ec.DocumentUrl))
+                    {
+                        <a href="@ec.DocumentUrl" target="_blank">Download</a>
+                    }
+                    else
+                    {
+                        @("-")
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@ec.EmployeeCertificationId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@ec.EmployeeCertificationId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

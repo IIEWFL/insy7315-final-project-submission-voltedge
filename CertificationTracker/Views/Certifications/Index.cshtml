@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CertificationTracker.Models.Certification>
+@{
+    ViewData["Title"] = "Certifications";
+}
+<h2>Certifications</h2>
+<p><a class="btn btn-primary" asp-action="Create">Create New</a></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Validity Months</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(c.ImageUrl))
+                    {
+                        <img src="@c.ImageUrl" style="height:50px;" />
+                    }
+                    else
+                    {
+                        @("-")
+                    }
+                </td>
+                <td>@c.CertificationName</td>
+                <td>@c.ValidityMonths</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@c.CertificationId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@c.CertificationId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@c.CertificationId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

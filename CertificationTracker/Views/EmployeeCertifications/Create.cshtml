@@ -1,0 +1,33 @@
+﻿@model CertificationTracker.ViewModels.EmployeeCertificationCreateViewModel
+@{
+    var employees = ViewBag.Employees as IEnumerable<CertificationTracker.Models.Employee>;
+    var certs = ViewBag.Certifications as IEnumerable<CertificationTracker.Models.Certification>;
+}
+<h2>Assign Certification</h2>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Employee</label>
+        <select asp-for="EmployeeId" class="form-control" asp-items="@(new SelectList(employees, "EmployeeId", "FullName"))"></select>
+    </div>
+    <div class="form-group">
+        <label>Certification</label>
+        <select asp-for="CertificationId" class="form-control" asp-items="@(new SelectList(certs, "CertificationId", "CertificationName"))"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateIssued"></label>
+        <input asp-for="DateIssued" class="form-control" type="date" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DateExpiry"></label>
+        <input asp-for="DateExpiry" class="form-control" type="date" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IssuedBy"></label>
+        <input asp-for="IssuedBy" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Upload Document</label>
+        <input asp-for="Document" type="file" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Assign</button>
+</form>
